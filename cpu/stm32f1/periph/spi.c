@@ -119,6 +119,9 @@ int spi_init_master(spi_t dev, spi_conf_t conf, spi_speed_t speed)
 
 int spi_init_slave(spi_t dev, spi_conf_t conf, char (*cb)(char))
 {
+    (void) dev;
+    (void) conf;
+    (void) cb;
     /* TODO */
     return -1;
 }
@@ -207,11 +210,11 @@ int spi_transfer_byte(spi_t dev, char out, char *in)
             return -1;
     }
 
-    while ((spi->SR & SPI_SR_TXE) == RESET);
+    while (!(spi->SR & SPI_SR_TXE));
     spi->DR = out;
     transferred++;
 
-    while ((spi->SR & SPI_SR_RXNE) == RESET);
+    while (!(spi->SR & SPI_SR_RXNE));
     if (in != NULL) {
         *in = spi->DR;
         transferred++;
@@ -236,6 +239,8 @@ int spi_transfer_byte(spi_t dev, char out, char *in)
 
 void spi_transmission_begin(spi_t dev, char reset_val)
 {
+    (void) dev;
+    (void) reset_val;
     /* slave mode not implemented, yet */
 }
 
